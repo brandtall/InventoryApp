@@ -69,40 +69,25 @@ exports.items_detail = function(req, res, next) {
 // Display book create form on GET.
 exports.items_create_get = function(req, res, next) {
   // Get all authors and genres, which we can use for adding to our book.
-  async.parallel(
-    {
-      category: function(callback) {
-        Category.find(callback);
-      }
-    },
-    function(err, results) {
-      if (err) {
-        return next(err);
-      }
+    
       res.render("items_form", {
         title: "Create Item",
-        category: results.category
+        
       });
-    }
-  );
 };
 
 // Handle book create on POST.
 exports.items_create_post = [
   // Convert the genre to an array.
-  (req, res, next) => {
-    if (!(req.body.category instanceof Array)) {
-      if (typeof req.body.category === "undefined") req.body.category = [];
-      else req.body.category = new Array(req.body.category);
-    }
-    next();
-  },
-
+  
   // Validate fields.
   body("name", "Name must not be empty.")
     .isLength({ min: 1 })
     .trim(),
   body("description", "Description must not be empty.")
+    .isLength({ min: 1 })
+    .trim(),
+    body("category", "Category must not be empty")
     .isLength({ min: 1 })
     .trim(),
   body("price", "Price must not be empty.")
@@ -112,9 +97,7 @@ exports.items_create_post = [
     .isLength({ min: 1 })
     .trim(),
 
-  // Sanitize fields.
-  sanitizeBody("*").escape(),
-  sanitizeBody("category.*").escape(),
+    
   // Process request after validation and sanitization.
   (req, res, next) => {
     // Extract the validation errors from a request.
@@ -128,10 +111,9 @@ exports.items_create_post = [
       price: req.body.price,
       num_in_stock: req.body.num_in_stock
     });
-
+    console.log(errors.isEmpty())
     if (!errors.isEmpty()) {
       // There are errors. Render form again with sanitized values/error messages.
-
       // Get all authors and genres for form.
       async.parallel(
         {
@@ -157,6 +139,7 @@ exports.items_create_post = [
       // Data from form is valid. Save book.
       items.save(function(err) {
         if (err) {
+          console.log(items.category)
           return next(err);
         }
         // Successful - redirect to new book record.

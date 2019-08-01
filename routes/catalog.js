@@ -11,11 +11,9 @@ var category_controller = require('../controllers/categoryController');
 // GET catalog home page.
 router.get('/', items_controller.index);  
 
-// GET request for one Book.
-router.get('/items/:id', items_controller.items_detail);
 
-// GET request for list of all Book.
-router.get('/items', items_controller.items_list);
+
+
 // GET request for creating a Book. NOTE This must come before routes that display Book (uses id).
 router.get('/items/create', items_controller.items_create_get);
 
@@ -35,13 +33,12 @@ router.get('/items/:id/update', items_controller.items_update_get);
 router.post('/items/:id/update', items_controller.items_update_post);
 
 
-
-
 // GET request for one Book.
-router.get('/category/:id', category_controller.category_detail);
+router.get('/items/:id', items_controller.items_detail);
 
 // GET request for list of all Book.
-router.get('/category', category_controller.category_list);
+router.get('/items', items_controller.items_list);
+
 // GET request for creating a Genre. NOTE This must come before route that displays Genre (uses id).
 router.get('/category/create', category_controller.category_create_get);
 
@@ -60,6 +57,11 @@ router.get('/category/:id/update', category_controller.category_update_get);
 // POST request to update Genre.
 router.post('/category/:id/update', category_controller.category_update_post);
 
+// GET request for one Book.
+router.get('/category/:id', category_controller.category_detail);
+
+// GET request for list of all Book.
+router.get('/category', category_controller.category_list);
 
 
 module.exports = router;

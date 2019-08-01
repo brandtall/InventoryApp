@@ -41,6 +41,7 @@ exports.items_list = function(req, res, next) {
 // Display detail page for a specific book.
 exports.items_detail = function(req, res, next) {
   async.parallel(
+
     {
       items: function(callback) {
         Items.findById(req.params.id)
@@ -143,12 +144,6 @@ exports.items_create_post = [
             return next(err);
           }
 
-          // Mark our selected genres as checked.
-          for (let i = 0; i < results.category.length; i++) {
-            if (items.category.indexOf(results.category[i]._id) > -1) {
-              results.category[i].checked = "true";
-            }
-          }
           res.render("items_form", {
             title: "Create Item",
             category: results.category,

@@ -3,6 +3,7 @@ extends layout
 block content
 
   h1 Category: #{category.name}
+  h2 Description: #{category.description}
   
   div(style='margin-left:20px;margin-top:20px')
 
@@ -17,6 +18,6 @@ block content
 
   hr
   p
-    a(href=category.url+'/delete') Delete genre
+    a(href=category.url+'/delete') Delete category
   p
-    a(href=category.url+'/update') Update genre
+    a(href=category.url+'/update') Update category

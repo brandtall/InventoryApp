@@ -49,7 +49,6 @@ exports.category_detail = function(req, res, next) {
 
 // Display Genre create form on GET.
 exports.category_create_get = function(req, res, next) {
-  console.log('lol')
   res.render('category_form', { title: 'Create Category'});
 };
 
@@ -58,9 +57,11 @@ exports.category_create_post = [
 
   // Validate that the name field is not empty.
   body('name', 'Category name required').isLength({ min: 1 }).trim(),
+  body('description', 'Category description is required').isLength({min: 1}).trim(),
 
   // Sanitize (trim) the name field.
   sanitizeBody('name').escape(),
+  sanitizeBody('description').escape(),
 
   // Process request after validation and sanitization.
   (req, res, next) => {
@@ -70,7 +71,8 @@ exports.category_create_post = [
 
       // Create a genre object with escaped and trimmed data.
       var category = new Category(
-        { name: req.body.name }
+        { name: req.body.name,
+        description: req.body.description, }
       );
 
       if (!errors.isEmpty()) {
@@ -177,9 +179,11 @@ exports.category_update_post = [
  
   // Validate that the name field is not empty.
   body('name', 'Category name required').isLength({ min: 1 }).trim(),
+  body('description', 'Category description is required').isLength({min: 1}).trim(),
   
   // Sanitize (escape) the name field.
   sanitizeBody('name').escape(),
+  sanitizeBody('description').escape(),
 
   // Process request after validation and sanitization.
   (req, res, next) => {
@@ -191,6 +195,7 @@ exports.category_update_post = [
       var category = new Category(
         {
         name: req.body.name,
+        description: req.body.description,
         _id: req.params.id
         }
       );
